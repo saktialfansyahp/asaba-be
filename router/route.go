@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/saktialfansyahp/asaba-be.git/controllers"
 	"github.com/saktialfansyahp/asaba-be.git/models"
 )
 
@@ -35,30 +36,8 @@ func DefineRoutes() {
 		c.Next()
 	})
 
-	// r.POST("/api/login", authcontroller.Login)
-	// r.POST("/api/register", authcontroller.Register)
-	// r.POST("/api/role", authcontroller.Role)
-	// r.GET("/api/role", authcontroller.GetRole)
-
-	// r.GET("/api/kategori", kategoricontroller.Index)
-	// r.POST("/api/kategori", kategoricontroller.Create)
-
-	// r.GET("/api/status", statuscontroller.Index)
-	// r.POST("/api/status", statuscontroller.Create)
-
-	// r.GET("/api/sale", produkcontroller.Sale)
-
-	// r.GET("/api/produk", produkcontroller.Index)
-	// r.POST("/api/produk", produkcontroller.Create)
-	// r.GET("/api/produk/:id", func(ctx *gin.Context) {
-	// 	produkcontroller.ById(ctx, ctx.Param("id"))
-	// })
-	// r.PUT("/api/produk/:id", func(ctx *gin.Context) {
-	// 	produkcontroller.Edit(ctx, ctx.Param("id"))
-	// })
-	// r.DELETE("/api/produk/:id", func(ctx *gin.Context) {
-	// 	produkcontroller.Delete(ctx, ctx.Param("id"))
-	// })
+	r.GET("api/barang", controllers.Index)
+	r.POST("api/barang", controllers.Create)
 
 	r.Run()
 }
