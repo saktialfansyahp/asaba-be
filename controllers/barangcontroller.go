@@ -18,17 +18,6 @@ func Index(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"error": 0, "data": barang})
 }
 
-func ById(c *gin.Context, id string) {
-	var barang models.Barang
-
-	if err := models.DB.Preload("Kategori").Preload("Status").Where("id = ?", id).First(&barang).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": 1})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"error": 0, "data": barang})
-}
-
 func Create(c *gin.Context) {
 	var barang []models.Barang
 
@@ -91,41 +80,4 @@ func Stok(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Stok barang berhasil diupdate"})
-}
-
-func Edit(c *gin.Context, id string) {
-	var barang models.Barang
-	if err := c.ShouldBindJSON(&barang); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "1"})
-		return
-	}
-
-	// Cek apakah barang dengan product_id tersebut ada dalam database
-	var existingProduct models.Barang
-	if err := models.DB.Where("id = ?", id).First(&existingProduct).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "1"})
-		return
-	}
-
-	if err := models.DB.Save(&existingProduct).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "1"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"error": "0", "data": &existingProduct})
-}
-
-func Delete(c *gin.Context, id string) {
-	var existingProduct models.Barang
-	if err := models.DB.Where("id = ?", id).First(&existingProduct).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "1"})
-		return
-	}
-
-	if err := models.DB.Delete(&existingProduct).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "1"})
-		return
-	}
-
-	c.JSON(http.StatusNoContent, gin.H{"error": "0", "data": &existingProduct})
 }
