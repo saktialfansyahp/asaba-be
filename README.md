@@ -1,6 +1,4 @@
-# Go Fast Print
-
-Selamat datang di Proyek Go Fast Print! Proyek ini berisi implementasi backend untuk layanan Anda. Di bawah ini, Anda akan menemukan informasi tentang cara menjalankan proyek, endpoint yang tersedia, dan bagaimana cara menggunakannya.
+# Asaba Back End
 
 ## Menjalankan Proyek
 
