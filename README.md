@@ -33,7 +33,8 @@ Selamat datang di Proyek Go Fast Print! Proyek ini berisi implementasi backend u
    ```
 
    Server akan berjalan pada alamat http://localhost:8080.
-   Database akan auto migrate
+
+   Database akan auto migrate.
 
 # Endpoint
 
