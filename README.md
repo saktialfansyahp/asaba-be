@@ -84,6 +84,4 @@ Selamat datang di Proyek Go Fast Print! Proyek ini berisi implementasi backend u
 
 # Note
 
-Untuk menambahkan kategori dan status dilakukan dengan melakukan POST data melalui postman. Hal tersebut diperlukan karena dalam view Vue JS saya tidak membuat fitur untuk mengelola kategori dan status
-
 Pastikan untuk menjalankan server backend terlebih dahulu
