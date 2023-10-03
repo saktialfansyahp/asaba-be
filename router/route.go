@@ -38,6 +38,7 @@ func DefineRoutes() {
 
 	r.GET("api/barang", controllers.Index)
 	r.POST("api/barang", controllers.Create)
+	r.POST("api/stok", controllers.Stok)
 
 	r.Run()
 }

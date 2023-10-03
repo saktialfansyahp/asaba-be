@@ -10,7 +10,7 @@ import (
 func Index(c *gin.Context) {
 	var barang []models.Barang
 
-	if err := models.DB.Preload("Kategori").Preload("Status").Find(&barang).Error; err != nil {
+	if err := models.DB.Find(&barang).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": 1})
 		return
 	}
@@ -45,7 +45,6 @@ func Create(c *gin.Context) {
         }
     }
 
-    // Simpan setiap barang ke database
     for _, input := range barang {
         if err := models.DB.Create(&input).Error; err != nil {
             c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
@@ -53,12 +52,45 @@ func Create(c *gin.Context) {
         }
     }
 
-	if err := models.DB.Create(&barang).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "1"})
+	c.JSON(http.StatusCreated, gin.H{"error": "0", "data": &barang})
+}
+
+func Stok(c *gin.Context) {
+	var stoks []models.Stok
+
+	if err := c.ShouldBindJSON(&stoks); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"error": "0", "data": &barang})
+	for _, stok := range stoks {
+		var existingBarang models.Barang
+
+		if err := models.DB.Where("code = ?", stok.Code).First(&existingBarang).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Not Found", "message": "Barang not found"})
+			return
+		}
+
+		if stok.Tipe == "masuk" {
+			existingBarang.Jumlah += stok.Jumlah
+		} else if stok.Tipe == "keluar" {
+			if existingBarang.Jumlah < stok.Jumlah {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request", "message": "Not enough stock"})
+				return
+			}
+			existingBarang.Jumlah -= stok.Jumlah
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request", "message": "Invalid request type"})
+			return
+		}
+
+		if err := models.DB.Save(&existingBarang).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Stok barang berhasil diupdate"})
 }
 
 func Edit(c *gin.Context, id string) {

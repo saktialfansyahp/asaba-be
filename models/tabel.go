@@ -8,3 +8,8 @@ type Barang struct {
 	Deskripsi string `gorm:"type:text" json:"deskripsi"`
 	IsActive  bool   `gorm:"not null" json:"isActive"`
 }
+type Stok struct {
+	Code   string `gorm:"unique;size:10;not null" json:"code"`
+	Tipe   string `gorm:"type:text" json:"tipe"`
+	Jumlah int    `gorm:"type:number" json:"jumlah"`
+}
