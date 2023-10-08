@@ -17,6 +17,24 @@ var (
 func router(r *gin.RouterGroup){
 	models.ConnectDatabase()
 
+	r.GET("api/barang", controllers.Index)
+	r.POST("api/barang", controllers.Create)
+	r.POST("api/stok", controllers.Stok)
+}
+
+func init() {
+	app = gin.New()
+
+	app.NoRoute(func(c *gin.Context) {
+		sb := &strings.Builder{}
+		sb.WriteString("routing err: no route, try this:\n")
+		for _, v := range app.Routes() {
+			sb.WriteString(fmt.Sprintf("%s %s\n", v.Method, v.Path))
+		}
+		c.String(http.StatusBadRequest, sb.String())
+	})
+
+	r := app.Group("/")
 	r.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -40,26 +58,6 @@ func router(r *gin.RouterGroup){
 
 		c.Next()
 	})
-
-	r.GET("api/barang", controllers.Index)
-	r.POST("api/barang", controllers.Create)
-	r.POST("api/stok", controllers.Stok)
-}
-
-func init() {
-	app = gin.New()
-
-	app.NoRoute(func(c *gin.Context) {
-		sb := &strings.Builder{}
-		sb.WriteString("routing err: no route, try this:\n")
-		for _, v := range app.Routes() {
-			sb.WriteString(fmt.Sprintf("%s %s\n", v.Method, v.Path))
-		}
-		c.String(http.StatusBadRequest, sb.String())
-	})
-
-	r := app.Group("/")
-
 	router(r)
 }
 
