@@ -21,10 +21,10 @@ func Index(c *gin.Context) {
 func Create(c *gin.Context) {
 	var barang []models.Barang
 
-	if err := c.ShouldBindJSON(&barang); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
-		return
-	}
+	// if err := c.ShouldBindJSON(&barang); err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
+	// 	return
+	// }
 
 	for _, input := range barang {
         var existingBarang models.Barang
