@@ -14,22 +14,9 @@ var (
 	app *gin.Engine
 )
 
-func corsMiddleware(c *gin.Context) {
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-
-	if c.Request.Method == "OPTIONS" {
-		c.AbortWithStatus(http.StatusOK)
-	} else {
-		c.Next()
-	}
-}
-
 func router(r *gin.RouterGroup){
 	models.ConnectDatabase()
 
-	r.Use(corsMiddleware)
 	r.GET("api/barang", controllers.Index)
 	r.POST("api/barang", controllers.Create)
 	r.POST("api/stok", controllers.Stok)
