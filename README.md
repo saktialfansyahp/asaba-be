@@ -80,6 +80,12 @@
    ]
    ```
 
+4. Rute untuk melihat perubahan stok.
+
+   ```http
+   GET /api/stok
+   ```
+
 # Note
 
 Pastikan untuk menjalankan server backend terlebih dahulu
